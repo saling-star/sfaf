@@ -1,0 +1,28 @@
+{# Bootstrap modal, see https://getbootstrap.com/docs/3.4/javascript/#modals #}
+<div class="modal fade" id="confirmationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h4>{{ 'delete_doc_modal.title'|trans }}</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <p>{{ 'delete_doc_modal.body'|trans }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btnNo" data-bs-dismiss="modal">
+                    <i class="fa fa-ban" aria-hidden="true"></i> {{ 'label.cancel'|trans }}
+                </button>
+                <!--button type="button" class="btn btn-danger" id="btnYes" data-dismiss="modal">
+                    <i class="fa fa-trash" aria-hidden="true"></i> {{ 'label.delete_doc'|trans }}
+                </button-->
+<form action="{{ path(llll.route_dcmnt_id, {id: dcmnt.id}) }}/delete" method='POST' data-confirmation="true" id="delete-form">
+    <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+    <button type="submit" class="btn btn-lg btn-block btn-danger">
+        <i class="fa fa-trash" aria-hidden="true"></i>
+        {{ 'Delete'|trans }}
+    </button>
+</form>
+
+            </div>
+        </div>
+    </div>
+</div>

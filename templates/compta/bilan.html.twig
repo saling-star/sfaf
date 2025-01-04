@@ -1,0 +1,187 @@
+{% extends 'compta/base.html.twig' %}
+
+{% block navigation %}<div class="center">
+    {% if crit.dir!='' %}&nbsp;&nbsp;&nbsp;&nbsp;Dir : {{ crit.dir }}{% endif %}
+    {% if crit.year!='' %}&nbsp;&nbsp;&nbsp;&nbsp;Year : {{ crit.year }}{% endif %}
+    {# { dump(result) } #}</div>
+{% endblock %}
+
+{% set sum6 = 0 %}{% block charges %}
+<h3>Charges : {{ crit.dir }} {{ crit.year }}</h3>
+<table border=1 width=100%><tbody>
+{% for dcmnt in dcs %}
+{% if(dcmnt.code starts with '6' and dcmnt.sumT !=0) %}
+    <tr>
+        <td>
+        {% if crit.dir!='' %}
+        {% if crit.year!='' %}
+        <a href="{{ path('compta_show', {id: dcmnt.id, dir: crit.dir, year: crit.year}) }}">
+        {% else %}<a href="{{ path('compta_show', {id: dcmnt.id, dir: crit.dir}) }}">
+        {% endif %}{% else %}<a href="{{ path('compta_show', {id: dcmnt.id}) }}">
+        {% endif %}
+        {{ dcmnt.code }} </a></td>
+        <td align='center'>{{ dcmnt.title }}</td>
+        <td align='right'>{{ (-dcmnt.sumT/100)|number_format(0,',',' ') }}</td>
+        {% set sum6 = sum6 + dcmnt.sumT %}
+    </tr>
+{% endif %}
+{% endfor %}
+    <tr>
+        <td></td>
+        <td>Total charges : ({{ -result.6 }})</td>
+        <td align='right'>{{ (-sum6/100)|number_format(0,',',' ') }}</td>
+    </tr>
+</tbody></table>
+Document fiscal (N° 2033-A-SD)
+<table border=1 width=100%><tbody>
+    <tr>
+        <td>Autre charges externes</td><td>|242|</td><td align='right'>{{ (- result.60 - result.61)|number_format(0,',',' ') }}</td>
+    </tr>
+    <tr>
+        <td>Impôts, taxes</td><td>|244|</td><td align='right'>{{ (- result.63)|number_format(0,',',' ') }}</td>
+    </tr>
+    <tr>
+        <td>Dotation aux amortissements</td><td>|254|</td><td align='right'>{{ (- result.68)|number_format(0,',',' ') }}</td>
+    </tr>
+    <tr>
+        <td>Total charges</td><td>|264|</td><td align='right'>{{ (- result.60 - result.61 - result.63 - result.68)|number_format(0,',',' ') }}</td>
+    </tr>
+    <tr>
+        <td>Résultat d'exploitation</td><td>|270|</td><td align='right'>{{ (- result.69)|number_format(0,',',' ') }}</td>
+    </tr>
+</tbody></table>
+{% endblock %}
+
+{% set sum7 = 0 %}{% block produits %}
+<h3>Produits : {{ crit.dir }} {{ crit.year }}</h3>
+<table border=1 width=100%><tbody>
+{% for dcmnt in dcs %}
+{% if(dcmnt.code starts with '7' and dcmnt.sumT !=0) %}
+    <tr>
+        <td>
+        {% if crit.dir!='' %}
+        {% if crit.year!='' %}
+        <a href="{{ path('compta_show', {id: dcmnt.id, dir: crit.dir, year: crit.year}) }}">
+        {% else %}<a href="{{ path('compta_show', {id: dcmnt.id, dir: crit.dir}) }}">
+        {% endif %}{% else %}<a href="{{ path('compta_show', {id: dcmnt.id}) }}">
+        {% endif %}
+        {{ dcmnt.code }} </a></td>
+        <td align='center'>{{ dcmnt.title }}</td>
+        <td align='right'>{{ (dcmnt.sumT/100)|number_format(0,',',' ') }}</td>
+        {% set sum7 = sum7 + dcmnt.sumT %}
+    </tr>
+{% endif %}
+{% endfor %}
+    <tr>
+        <td></td>
+        <td>Total produits : ({{ result.7 }})</td>
+        <td align='right'>{{ (sum7/100)|number_format(0,',',' ') }}</td>
+    </tr>
+</tbody></table>
+{% endblock %}
+
+{% block comptexp %}
+Produits - charges : {{ result.7+result.6 }}<br />
+Actif - passif : {{ -result.2-result.1 }}
+{% endblock %}
+
+{% block actif %}{% set sum2 = 0 %}
+<h3>Actif : {{ crit.dir }} {{ crit.year }}</h3>
+<table border=1 width=100%><tbody>
+{% for dcmnt in dcs %}
+{% if(((dcmnt.code starts with '2') or (dcmnt.code starts with '4') or (dcmnt.code starts with '5')) and dcmnt.sumT !=0) %}
+    <tr>
+        <td>
+        {% if crit.dir!='' %}
+        {% if crit.year!='' %}
+        <a href="{{ path('compta_show', {id: dcmnt.id, dir: crit.dir, year: crit.year}) }}">
+        {% else %}<a href="{{ path('compta_show', {id: dcmnt.id, dir: crit.dir}) }}">
+        {% endif %}{% else %}<a href="{{ path('compta_show', {id: dcmnt.id}) }}">
+        {% endif %}
+        {{ dcmnt.code }} </a></td>
+        <td align='center'>{{ dcmnt.title }}</td>
+        <td align='right'>{{ (-dcmnt.sumT/100)|number_format(0,',',' ') }}</td>
+        {% set sum2 = sum2 + dcmnt.sumT %}
+    </tr>
+{% endif %}
+{% endfor %}
+    <tr>
+        <td></td>
+        <td>Total actif : ({{ -result.2 }})</td>
+        <td align='right'>{{ (-sum2/100)|number_format(0,',',' ') }}</td>
+    </tr>
+</tbody></table>
+Document fiscal (N° 2033-A-SD)
+<table border=1 width=100%><tbody>
+    <tr>
+        <td>Actif</td><td></td><td>Brut</td><td></td>
+        <td>Amortissement</td><td></td><td>Net</td><td></td>
+    </tr>
+    <tr>
+        <td>Immobilisations corporelles</td><td>|028|</td><td align='right'>{{ (- result.21 - result.24)|number_format(0,',',' ') }}</td>
+        <td>|030|</td><td align='right'>{{ (- result.28)|number_format(0,',',' ') }}</td>
+        <td>|</td><td align='right'>{{ (- result.21 - result.24 - result.28)|number_format(0,',',' ') }}</td>
+    </tr>
+    <tr>
+        <td>Autres créances</td><td>|072|</td>
+        <td align='right'>{{ (- result.40)|number_format(0,',',' ') }}</td>
+        <td>|074|</td><td></td>
+        <td>|</td><td align='right'>{{ (- result.40)|number_format(0,',',' ') }}</td>
+    </tr>
+    <tr>
+        <td>Disponibilités</td><td>|084|</td>
+        <td align='right'>{{ (- result.51)|number_format(0,',',' ') }}</td>
+        <td>|086|</td><td></td>
+        <td>|</td><td align='right'>{{ (- result.51)|number_format(0,',',' ') }}</td>
+    </tr>
+</tbody></table>
+{% endblock %}
+
+{% block passif %}{% set sum1 = 0 %}
+<h3>Passif : {{ crit.dir }} {{ crit.year }}</h3>
+<table border=1 width=100%><tbody>
+{% for dcmnt in dcs %}
+{% if(dcmnt.code starts with '1' and dcmnt.sumT !=0) %}
+    <tr>
+        <td>
+        {% if crit.dir!='' %}
+        {% if crit.year!='' %}
+        <a href="{{ path('compta_show', {id: dcmnt.id, dir: crit.dir, year: crit.year}) }}">
+        {% else %}<a href="{{ path('compta_show', {id: dcmnt.id, dir: crit.dir}) }}">
+        {% endif %}{% else %}<a href="{{ path('compta_show', {id: dcmnt.id}) }}">
+        {% endif %}
+        {{ dcmnt.code }} </a></td>
+        <td align='center'>{{ dcmnt.title }}</td>
+        <td align='right'>{{ (dcmnt.sumT/100)|number_format(0,',',' ') }}</td>
+        {% set sum1 = sum1 + dcmnt.sumT %}
+    </tr>
+{% endif %}
+{% endfor %}
+    <tr>
+        <td></td>
+        <td>Total passif : ({{ result.1 }})</td>
+        <td align='right'>{{ (sum1/100)|number_format(0,',',' ') }}</td>
+    </tr>
+</tbody></table>
+{% endblock %}
+
+{% block amortis__àRefaire_ %}
+<h3>Amortissements : {{ crit.dir }} {{ crit.year }}</h3>
+<table border=1 width=100%><tbody>
+    <tr>
+        <td>Immobilisations</td><td>||</td><td>Brut début d'exercice</td><td>||</td><td>Augmentations</td><td>||</td><td>Diminutions</td><td>||</td><td>Brut fin d'exercice</td><td>Réévaluation</td>
+    </tr>
+    <tr>
+        <td>Terrains</td><td>|420|</td><td align='right'>{{ (result.21*0)|number_format(0,',',' ') }}</td>
+        <td>|422|</td><td align='right'>{{ (result.21*0.15)|number_format(0,',',' ') }}</td>
+        <td>|424|</td><td align='right'>{{ (result.21*0)|number_format(0,',',' ') }}</td>
+        <td>|426|</td><td align='right'>{{ (result.21*0.15)|number_format(0,',',' ') }}</td><td></td>
+    </tr>
+    <tr>
+        <td>Constructions</td><td>|430|</td><td align='right'>{{ (result.21*0)|number_format(0,',',' ') }}</td>
+        <td>|432|</td><td align='right'>{{ (result.21*0.85)|number_format(0,',',' ') }}</td>
+        <td>|434|</td><td align='right'>{{ (result.21*0)|number_format(0,',',' ') }}</td>
+        <td>|436|</td><td align='right'>{{ (result.21*0.85)|number_format(0,',',' ') }}</td><td></td>
+    </tr>
+</tbody></table>
+{% endblock %}

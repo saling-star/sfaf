@@ -1,0 +1,13 @@
+{{ include('admin/oooo/_delete_doc_confirmation.html.twig') }}
+
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmationModal">
+  {{ 'Delete'|trans }} ?
+</button>
+
+<!--form action="{{ path(llll.route_dcmnt_id, {id: dcmnt.id}) }}/delete" method='POST' data-confirmation="true" id="delete-form">
+    <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+    <button type="submit" class="btn btn-lg btn-block btn-danger">
+        <i class="fa fa-trash" aria-hidden="true"></i>
+        {{ 'Delete'|trans }}
+    </button>
+</form-->

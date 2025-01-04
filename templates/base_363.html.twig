@@ -1,0 +1,23 @@
+{% extends 'base_bootstrap.html.twig' %}
+
+{% block navigation %}{% endblock %}
+{% block body %}
+
+{% if app.user and app.user.isVerified == false %}
+    <div class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert-message">
+            <strong>{{ "Votre compte n'est pas activé"|trans }}</strong>, <a href="{{ path('user_resend_verif') }}">{{ "Renvoyer le lien d'activation"|trans }}</a>
+        </div>
+    </div>
+{% endif %}
+
+<div class="row">
+    <div class="col-3">{% block left %}{% endblock %}</div>
+    <div class="col-6">{% block main %}{% endblock %}</div>
+    <div class="col-3">{% block right %}{% endblock %}</div>
+</div>
+
+{% endblock %}
+
+{% block footer %}{% endblock %}

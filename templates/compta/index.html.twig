@@ -1,0 +1,16 @@
+{% extends 'compta/base.html.twig' %}
+
+{% block main %}
+
+    <h1>{{ 'Comptabilité'|trans }}</h1>
+
+    <form action="{{ url('compta_bilan') }}">
+    <input type='text' name='dir' placeholder='dir'>
+    </input>
+    <input type='text' name='year' placeholder='year'>
+    </input>
+    <input type='submit' name='submit'>
+    </input>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base_b.html.twig' %}
+
+{% block title %}{{ llll.title|trans }}{% endblock %}
+
+{% block main %}
+    <h1>{{ 'title.doc_list'|trans }} : {{ paginator.results|length }}</h1>
+
+    <table class="table table-striped table-middle-aligned">
+        <thead>
+            <tr>
+                {% for label,type in flds %}
+                <th scope="col">{{ label|trans }}</th>
+                {% endfor %}
+                <th scope="col">{{ 'Select'|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dcmnt in paginator.results %}{# { dump(dcmnts) } #}
+            <tr>
+                {% for label,type in flds %}
+                    {% if (type=='datetime') %}
+                        <td>{{ attribute(dcmnt,label)|format_datetime('short','short',locale='fr') }}</td>
+                    {% elseif (type=='array') %}
+                        <td>{{ attribute(dcmnt,label)|json_encode() }}</td>
+                    {% else %}
+                        <td>{{ attribute(dcmnt,label)|raw }}</td>
+                    {% endif %}
+                {% endfor %}
+                {% if(dcmnt.id is defined) %}
+                <td><a href="{{ path(llll.route_dcmnt_id, {id: dcmnt.id}) }}">
+                <button type="submit" class="btn btn-secondary">{{ button_label|default(dcmnt.id) }}</button></a></td>
+                {% else %}
+                <td><a href="{{ path(llll.route_dcmnt_list, {dcmnt}) }}">
+                <button type="submit" class="btn btn-secondary">{{ 'Category'|trans }}</button></a></td>
+                {% endif %}
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4" align="center">{{ 'doc.no_doc_found'|trans }}</td>
+           </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% if paginator.hasToPaginate %}
+    <div class="navigation text-center">
+        <ul class="pagination">
+
+            {% for i in 1..paginator.lastPage %}
+                {% if i == paginator.currentPage %}
+                    {% if paginator.hasPreviousPage %}
+                        <li class="prev"><a href="{{ path(llll.route_dcmnt_paginated, {page: paginator.previousPage}) }}" rel="previous"><button type="button" class="btn btn-outline-secondary"> {{ 'paginator.previous'|trans }}</button></a></li>
+                    {% else %}
+                        <li class="prev disabled"><span><button type="button" class="btn btn-outline-secondary"></button></span></li>
+                    {% endif %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">{{ 'paginator.current'|trans }}</span></span></li>
+                    {% if paginator.hasNextPage %}
+                        <li class="next"><a href="{{ path(llll.route_dcmnt_paginated, {page: paginator.nextPage}) }}" rel="next"><button type="button" class="btn btn-outline-secondary">{{ 'paginator.next'|trans }} </button></a></li>
+                    {% else %}
+                        <li class="next disabled"><span><button type="button" class="btn btn-outline-secondary"></button></span></li>
+                    {% endif %}
+                {% else %}
+                {% if i==1 or i>paginator.currentPage-9 %}
+                {% if i<paginator.currentPage+9 or i==paginator.lastPage %}
+                    <li></button><a href="{{ path(llll.route_dcmnt_paginated, {page: i}) }}">
+                    <button type="button" class="btn btn-outline-secondary">{{ i }}</button></a></button>
+                    </li>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+
+        </ul>
+    </div>
+{% endif %}
+{% endblock %}

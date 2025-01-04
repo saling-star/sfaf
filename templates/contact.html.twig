@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+	<div class="container">
+		
+		<main>
+<div>
+    <button onclick="openW()">Cliquez pour ouvrir le formulaire</button> 
+    <button onclick="closeW()">Cliquez ici pour fermer la fenêtre</button> 
+    <script> 
+      var win; 
+      function openW() { 
+        win = window.open("https://quiz.netinter.fr/quiz/test", "_blank", "width=600, height=600"); 
+      }
+      function closeW() { 
+        win.close(); 
+      }
+    </script> 
+</div>
+<div><p></p>
+    <a onclick='window.open("https://quiz.netinter.fr/quiz/test?Test", "_blank", "width=600, height=600")'>Cliquez pour ouvrir le formulaire "Test"</a>
+</div>
+<div><p></p>
+    <a onclick='window.open("https://quiz.netinter.fr/quiz/commentaire-question?Contact", "_blank", "width=600, height=600")'>Cliquez pour ouvrir le formulaire "Commentaire"</a>
+</div>
+<div><p></p>
+    <a onclick='window.open("https://quiz.netinter.fr/quiz/demande-cat-sitting?Cat-Sitting", "_blank", "width=600, height=600")'>Cliquez pour ouvrir le formulaire "Cat-Sitting"</a>
+</div>
+		</main>
+
+	</div>
+{% endblock %}
+{#
+<h4>Cat-Sitting</h4>
+<p></p>
+<p><a onclick="window.open('https://quiz.paris-cat-sitting.fr/quiz/demande-cat-sitting?Cat-Sitting', '_blank', 'width=500, height=800')">Cliquez pour ouvrir le formulaire "Cat-Sitting" (première demande complète)</a></p>
+<p></p>
+<p><a onclick="window.open('https://quiz.paris-cat-sitting.fr/quiz/demande-cat-sitting-2?Cat-Sitting', '_blank', 'width=500, height=800')">Si vous avez déjà fait une première demande et fourni vos coordonnée, cliquez ici</a></p>
+<p></p>
+<p>Cette demande sera transmise aux professionnels concernés.</p>
+
+<br><br>
+<div>
+<a onclick='window.open("https://quiz.chamomille.fr/quiz/demande-cat-sitting?Chamomille", "_blank", "width=500, height=600")'>
+  <h1><center>Faire une demande de Cat-Sitting</center></h1>
+<br>
+<p>Si vous vous absentez et avez besoin d'un service de cat-sitting (visite de votre chat à domicile), utilisez le formulaire ci-dessous.</p>
+<br><br>
+<center><i>Ouvrir le formulaire de demande</i></center>
+</a>
+</div>
+
+#}

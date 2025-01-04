@@ -1,0 +1,14 @@
+{% extends "admin/oooo/base_side.html.twig" %}
+
+{% block title %}{{ llll.title|trans }}{% endblock %}
+
+{% block main %}{# { dump(dcmnt) } #}
+    <main class="container">
+        <section class="row">
+            <div class="col-12">
+                <h1>Find documents</h1>
+                {% include "admin/oooo/_find_form.html.twig" with {'button_label': 'Find documents'} %}
+            </div>
+        </section>
+    </main>
+{% endblock %}
